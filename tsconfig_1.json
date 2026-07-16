@@ -1,0 +1,14 @@
+# Copia este archivo a .env.local (local) o configúralo en Vercel → Settings → Environment Variables.
+
+# Firma de sesiones (genera un string aleatorio de 32+ caracteres)
+JWT_SECRET=cambia-esto-por-un-string-aleatorio-largo
+
+# Credenciales del admin (Salo). Si no se ponen, el default es salo@talentscout.ai / admin123
+ADMIN_EMAIL=salo@talentscout.ai
+ADMIN_PASSWORD=cambia-esto
+
+# Google Sheets (misma hoja que usa n8n)
+GOOGLE_SHEETS_ID=1PREnTQ2ExycKZ2J_mq-GIL9P7PgqO61i3Te9IB2qQv0
+GOOGLE_SERVICE_ACCOUNT_EMAIL=tu-service-account@tu-proyecto.iam.gserviceaccount.com
+# Pega el private key completo entre comillas, con los \n escapados:
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMIIE...\n-----END PRIVATE KEY-----\n"

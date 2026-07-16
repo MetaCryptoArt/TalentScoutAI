@@ -1,0 +1,25 @@
+import { NextResponse } from "next/server";
+import { findCompanyByLogin } from "@/lib/data";
+import { signToken, EMPRESA_COOKIE } from "@/lib/jwt";
+
+export async function POST(req: Request) {
+  const { email, password } = await req.json().catch(() => ({ email: "", password: "" }));
+  const company = findCompanyByLogin(email || "", password || "");
+  if (!company) {
+    return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
+  }
+  const token = await signToken({
+    role: "empresa",
+    companyId: company.id,
+    companyName: company.name,
+  });
+  const res = NextResponse.json({ ok: true });
+  res.cookies.set(EMPRESA_COOKIE, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 8,
+  });
+  return res;
+}

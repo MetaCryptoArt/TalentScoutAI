@@ -1,0 +1,40 @@
+import Link from "next/link";
+import { getEmpresaSession } from "@/lib/auth";
+import { getCandidateBySession } from "@/lib/sheets";
+import CandidateDetail from "@/components/CandidateDetail";
+import type { Candidate } from "@/lib/types";
+
+export const dynamic = "force-dynamic";
+
+export default async function PortalCandidate({
+  params,
+}: {
+  params: Promise<{ sessionId: string }>;
+}) {
+  const { sessionId } = await params;
+  const session = await getEmpresaSession();
+  let c: Candidate | null = null;
+  let error = "";
+  try {
+    c = await getCandidateBySession(sessionId);
+    // Aislamiento: la empresa solo ve SUS candidatos
+    if (c && session && c.client_company.trim().toLowerCase() !== session.companyName.trim().toLowerCase()) {
+      c = null;
+    }
+  } catch (e) {
+    error = (e as Error).message;
+  }
+
+  return (
+    <>
+      <Link className="back" href="/portal">← Volver a candidatos</Link>
+      {error ? (
+        <div className="card"><div className="empty">{error}</div></div>
+      ) : c ? (
+        <CandidateDetail c={c} />
+      ) : (
+        <div className="card"><div className="empty">Candidato no encontrado.</div></div>
+      )}
+    </>
+  );
+}
