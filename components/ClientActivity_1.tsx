@@ -150,7 +150,7 @@ export default function ClientActivity({
           <table>
             <thead><tr>
               <th>Empresa</th><th>Plan</th><th>Estado</th><th>Último ingreso</th>
-              <th>CVs</th><th>Entrevistas</th><th>Reportes</th><th>Última actividad</th><th>Salud</th><th>Acciones</th>
+              <th>CVs</th><th>Entrevistas</th><th>Reportes</th><th>Última actividad</th><th>Salud / acciones</th>
             </tr></thead>
             <tbody>
               {rows.map((r) => {
@@ -177,8 +177,12 @@ export default function ClientActivity({
                     <td><b style={{ fontSize: 15, color: r.interviews ? "var(--d-green)" : "var(--d-faint)" }}>{r.interviews}</b></td>
                     <td><b style={{ fontSize: 15, color: r.reports ? "var(--d-text)" : "var(--d-faint)" }}>{r.reports}</b></td>
                     <td style={{ fontSize: 13, color: "var(--d-muted)" }}>{r.lastMs ? ago(new Date(r.lastMs).toISOString()) : "—"}</td>
-                    <td><span style={{ fontSize: 12, fontWeight: 700, color: h.color, background: h.bg, padding: "5px 11px", borderRadius: 20, whiteSpace: "nowrap" }}>{h.label}</span></td>
-                    <td><StartCompanyInterviews company={r.name} pending={Math.max(0, r.cvs - r.interviews)} /></td>
+                    <td>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+                        <span style={{ fontSize: 12, fontWeight: 700, color: h.color, background: h.bg, padding: "5px 11px", borderRadius: 20, whiteSpace: "nowrap" }}>{h.label}</span>
+                        <StartCompanyInterviews company={r.name} pending={Math.max(0, r.cvs - r.interviews)} />
+                      </div>
+                    </td>
                   </tr>
                 );
               })}
